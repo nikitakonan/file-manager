@@ -1,7 +1,7 @@
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { readdir } from 'node:fs/promises';
-import { createReadStream } from 'node:fs';
+import { readdir, writeFile, access } from 'node:fs/promises';
+import { createReadStream, constants } from 'node:fs';
 import { parseArgs } from './src/args.js';
 
 const args = parseArgs();
@@ -18,6 +18,7 @@ const commandFactory = {
   cd,
   ls,
   cat,
+  add,
 };
 
 process.stdin.on('data', async (chunk) => {
@@ -115,4 +116,24 @@ async function cat(args) {
       reject(error);
     });
   });
+}
+
+async function add(args) {
+  if (args.length < 1) {
+    throw new Error('Invalid input');
+  }
+
+  const [fileName] = args;
+
+  const path = join(currentDirectory, fileName);
+
+  try {
+    await access(path, constants.R_OK);
+    throw new Error('File already exists');
+  } catch (error) {
+    if (error.message === 'File already exists') {
+      throw error;
+    }
+    await writeFile(path, '');
+  }
 }
