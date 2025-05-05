@@ -1,6 +1,7 @@
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { readdir } from 'node:fs/promises';
+import { createReadStream } from 'node:fs';
 import { parseArgs } from './src/args.js';
 
 const args = parseArgs();
@@ -16,6 +17,7 @@ const commandFactory = {
   up,
   cd,
   ls,
+  cat,
 };
 
 process.stdin.on('data', async (chunk) => {
@@ -88,4 +90,29 @@ async function ls() {
       }))
       .sort((a, b) => a.Type.localeCompare(b.Type))
   );
+}
+
+async function cat(args) {
+  if (args.length < 1) {
+    throw new Error('Invalid input');
+  }
+
+  return new Promise((resolve, reject) => {
+    const [filePath] = args;
+
+    const path = join(currentDirectory, filePath);
+    const stream = createReadStream(path, 'utf-8');
+    const startLine = `----------  ${filePath} ----------`;
+    process.stdout.write(`\n${startLine}\n`);
+    stream.on('data', (chunk) => {
+      process.stdout.write(chunk);
+    });
+    stream.on('end', () => {
+      process.stdout.write(`\n${'-'.repeat(startLine.length)}\n\n`);
+      resolve();
+    });
+    stream.on('error', (error) => {
+      reject(error);
+    });
+  });
 }
