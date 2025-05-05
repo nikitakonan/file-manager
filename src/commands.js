@@ -1,6 +1,7 @@
 import add from './add.js';
 import cat from './cat.js';
 import cd from './cd.js';
+import cp from './cp.js';
 import exit from './exit.js';
 import ls from './ls.js';
 import mkdir from './mkdir.js';
@@ -16,4 +17,5 @@ export const commands = {
   add,
   mkdir,
   rn,
+  cp,
 };
