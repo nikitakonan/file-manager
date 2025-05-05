@@ -5,6 +5,8 @@ import cp from './cp.js';
 import exit from './exit.js';
 import ls from './ls.js';
 import mkdir from './mkdir.js';
+import mv from './mv.js';
+import rm from './rm.js';
 import rn from './rn.js';
 import up from './up.js';
 
@@ -18,4 +20,6 @@ export const commands = {
   mkdir,
   rn,
   cp,
+  mv,
+  rm,
 };
