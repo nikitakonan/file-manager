@@ -4,6 +4,7 @@ import cd from './cd.js';
 import exit from './exit.js';
 import ls from './ls.js';
 import mkdir from './mkdir.js';
+import rn from './rn.js';
 import up from './up.js';
 
 export const commands = {
@@ -14,4 +15,5 @@ export const commands = {
   cat,
   add,
   mkdir,
+  rn,
 };
