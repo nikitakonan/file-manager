@@ -15,6 +15,7 @@ const commandFactory = {
   exit,
   up,
   cd,
+  ls,
 };
 
 process.stdin.on('data', async (chunk) => {
@@ -75,4 +76,16 @@ async function cd(args) {
   }
 
   currentDirectory = join(currentDirectory, path);
+}
+
+async function ls() {
+  const files = await readdir(currentDirectory, { withFileTypes: true });
+  console.table(
+    files
+      .map((file) => ({
+        Name: file.name,
+        Type: file.isDirectory() ? 'directory' : 'file',
+      }))
+      .sort((a, b) => a.Type.localeCompare(b.Type))
+  );
 }
