@@ -3,6 +3,7 @@ import cat from './cat.js';
 import cd from './cd.js';
 import cp from './cp.js';
 import exit from './exit.js';
+import hash from './hash.js';
 import ls from './ls.js';
 import mkdir from './mkdir.js';
 import mv from './mv.js';
@@ -24,4 +25,5 @@ export const commands = {
   mv,
   rm,
   os,
+  hash,
 };
