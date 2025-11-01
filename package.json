@@ -1,0 +1,20 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nikitakonan/file-manager.git"
+  },
+  "author": "nikitakonan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nikitakonan/file-manager/issues"
+  },
+  "homepage": "https://github.com/nikitakonan/file-manager#readme",
+  "description": "A simple file manager"
+}
