@@ -15,7 +15,7 @@ import rn from './rn.js';
 import up from './up.js';
 
 export const commands = {
-  exit,
+  '.exit': exit,
   up,
   cd,
   ls,
