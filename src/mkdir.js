@@ -1,5 +1,4 @@
 import { access, mkdir } from 'node:fs/promises';
-import { join } from 'node:path';
 
 export default async function mkdirCommand(args, ctx) {
   if (args.length < 1) {

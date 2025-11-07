@@ -1,5 +1,6 @@
 import { access, constants, rename } from 'node:fs/promises';
-import { isAbsolute, join, parse, resolve } from 'node:path';
+import { join, parse } from 'node:path';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function rn(args, ctx) {
   if (args.length < 2) {
@@ -7,9 +8,9 @@ export default async function rn(args, ctx) {
   }
 
   const [filePath, newName] = args;
-  const fullPath = isAbsolute(filePath) ? normalize(filePath) : resolve(ctx.currentDirectory, filePath);
+  const fullPath = getFullPath(filePath, ctx.currentDirectory);
 
-  await access(fullPath, constants.R_OK);
+  await access(fullPath, constants.W_OK);
 
   const parsed = parse(fullPath);
   const newPath = join(parsed.dir, `${newName}${parsed.ext}`);

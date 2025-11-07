@@ -1,7 +1,8 @@
 import { createReadStream, createWriteStream } from 'node:fs';
 import { access, constants } from 'node:fs/promises';
-import { isAbsolute, join, normalize, parse, resolve } from 'node:path';
+import { join, parse } from 'node:path';
 import { pipeline } from 'node:stream/promises';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function cp(args, ctx) {
   if (args.length < 2) {
@@ -10,14 +11,10 @@ export default async function cp(args, ctx) {
 
   const [pathToFile, dir] = args;
 
-  const filePath = isAbsolute(pathToFile)
-    ? normalize(pathToFile)
-    : resolve(ctx.currentDirectory, pathToFile);
+  const filePath = getFullPath(pathToFile, ctx.currentDirectory);
   await access(filePath, constants.R_OK);
   const toBase = parse(filePath).base;
-  const fullDir = isAbsolute(dir)
-    ? normalize(dir)
-    : resolve(ctx.currentDirectory, dir);
+  const fullDir = getFullPath(dir, ctx.currentDirectory);
   const toPath = join(fullDir, toBase);
 
   const readStream = createReadStream(filePath);

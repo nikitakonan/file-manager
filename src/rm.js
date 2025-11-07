@@ -1,5 +1,5 @@
 import { unlink } from 'node:fs/promises';
-import { isAbsolute, normalize, resolve } from 'node:path';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function rm(args, ctx) {
   if (args.length < 1) {
@@ -7,8 +7,7 @@ export default async function rm(args, ctx) {
   }
 
   const [path] = args;
-
-  const fullPath = isAbsolute(path) ? normalize(path) : resolve(ctx.currentDirectory, path);
+  const fullPath = getFullPath(path, ctx.currentDirectory);
 
   await unlink(fullPath);
 }

@@ -1,16 +1,17 @@
 import { createReadStream } from 'node:fs';
-import { join } from 'node:path';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function cat(args, ctx) {
   if (args.length < 1) {
     throw new Error('Invalid input');
   }
 
-  return new Promise((resolve, reject) => {
-    const [filePath] = args;
+  const [filePath] = args;
+  const fullPath = getFullPath(filePath, ctx.currentDirectory);
 
-    const path = join(ctx.currentDirectory, filePath);
-    const stream = createReadStream(path, 'utf-8');
+  return new Promise((resolve, reject) => {
+    const stream = createReadStream(fullPath, 'utf-8');
+    
     const startLine = `----------  ${filePath} ----------`;
     process.stdout.write(`\n${startLine}\n`);
     stream.on('data', (chunk) => {

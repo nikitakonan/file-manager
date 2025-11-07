@@ -1,5 +1,5 @@
-import { constants, access } from 'node:fs/promises';
-import { resolve, isAbsolute, normalize } from 'node:path';
+import { access, constants } from 'node:fs/promises';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function cd(args, ctx) {
   if (args.length < 1) {
@@ -7,7 +7,7 @@ export default async function cd(args, ctx) {
   }
 
   const [path] = args;
-  const newDir = isAbsolute(path) ? normalize(path) : resolve(ctx.currentDirectory, path);
+  const newDir = getFullPath(path, ctx.currentDirectory);
   await access(newDir, constants.R_OK);
 
   ctx.currentDirectory = newDir;
