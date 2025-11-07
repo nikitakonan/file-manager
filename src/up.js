@@ -1,10 +1,10 @@
 import { homedir } from 'node:os';
+import { parse, dirname } from 'node:path';
 
 export default function up(_args, ctx) {
-  if (ctx.currentDirectory !== homedir()) {
-    ctx.currentDirectory = ctx.currentDirectory
-      .split('/')
-      .slice(0, -1)
-      .join('/');
+  const root = parse(homedir()).root;
+
+  if (ctx.currentDirectory !== root) {
+    ctx.currentDirectory = dirname(ctx.currentDirectory);
   }
 }
