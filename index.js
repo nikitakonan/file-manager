@@ -17,7 +17,6 @@ const ctx = {
 
 greet();
 printCurrentDirectory();
-
 ctx.rl.question('Enter one of the commands:\n', handleInput);
 
 process.on('SIGINT', () => {
@@ -36,10 +35,12 @@ async function handleInput(input) {
       ctx.rl.question('Enter one of the commands:\n', handleInput);
     } catch (error) {
       process.stdout.write(`Operation failed\n${error.message}\n`);
+      printCurrentDirectory();
       ctx.rl.question('Enter one of the commands:\n', handleInput);
     }
   } else {
     process.stdout.write('Invalid input\n');
+    printCurrentDirectory();
     ctx.rl.question('Enter one of the commands:\n', handleInput);
   }
 }
