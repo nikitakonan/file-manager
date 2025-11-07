@@ -1,22 +1,25 @@
 import { createHash } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { join } from 'node:path';
+import { Writable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import getFullPath from '../util/getFullPath.js';
 
 export default async function hash(args, ctx) {
   if (args.length < 1) {
     throw new Error('Invalid input');
   }
 
-  const [fileName] = args;
-  const filePath = join(ctx.currentDirectory, fileName);
+  const [path] = args;
+  const fullPath = getFullPath(path, ctx.currentDirectory);
 
-  const stream = createReadStream(filePath);
+  const stream = createReadStream(fullPath);
   const hash = createHash('sha256');
 
   return new Promise((resolve, reject) => {
     stream.pipe(hash);
 
     stream.on('end', () => {
+      resolve();
       process.stdout.write(`${hash.digest('hex')}\n`);
     });
 
